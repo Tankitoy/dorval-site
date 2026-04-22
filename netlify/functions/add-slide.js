@@ -112,6 +112,6 @@ exports.handler = async (event) => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify({ success: true, image: imagePath, total: slides.length }),
+    body: JSON.stringify({ success: true, image: imageUrl, total: slides.length }),
   };
 };
