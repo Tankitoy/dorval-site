@@ -57,11 +57,16 @@ exports.handler = async (event) => {
   }
 
   /* Parsing du corps */
+  console.log('RAW BODY:', String(event.body).slice(0, 500));
   let body;
   try { body = JSON.parse(event.body); }
   catch (e) {
+    console.log('JSON PARSE ERROR:', e.message);
     return { statusCode: 400, body: `Invalid JSON: ${e.message} — raw: ${String(event.body).slice(0, 200)}` };
   }
+  console.log('KEYS:', Object.keys(body).join(', '));
+  console.log('caption1:', body.caption1);
+  console.log('image length:', body.image ? body.image.length : 'MISSING');
 
   const { caption1, caption2, image, filename } = body;
   const token = process.env.GITHUB_TOKEN;
