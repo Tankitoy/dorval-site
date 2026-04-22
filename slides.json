@@ -1,10 +1,23 @@
 [
   {
     "image": "Bandeau-MATTHIEU-DORVAL-Tempete-Falaises-Bleues-1-33-x-41-2025_-Courtesy-Galerie-dArt-Le-Comoedia.png",
-    "caption": ["Tempête, Falaises Bleues — 1.33 × 41", "2025"]
+    "caption": [
+      "Tempête, Falaises Bleues — 1.33 × 41",
+      "2025"
+    ]
   },
   {
     "image": "Bandeau-MATTHIEU-DORVAL-Tempete-Falaises-Bleues-2-33-x-41-2025_-Courtesy-Galerie-dArt-Le-Comoedia.png",
-    "caption": ["Tempête, Falaises Bleues — 2.33 × 41", "2025"]
+    "caption": [
+      "Tempête, Falaises Bleues — 2.33 × 41",
+      "2025"
+    ]
+  },
+  {
+    "image": "https://i.ibb.co/qMZnw67k/8f7751252d21.jpg",
+    "caption": [
+      "Test peinture, 40 × 30 cm",
+      "2025"
+    ]
   }
 ]
