@@ -1,10 +1,14 @@
 /* ─────────────────────────────────────────────────────────────────────
    add-slide.js  —  Netlify Function
-   Reçoit une image + légende depuis Make.com et met à jour le site.
+   Reçoit un chemin d'image + légende depuis Make.com
+   et met à jour slides.json sur GitHub.
 
    Variables d'environnement requises (Netlify dashboard) :
      GITHUB_TOKEN   — Personal Access Token GitHub (scope: repo)
      UPDATE_SECRET  — Clé secrète partagée avec Make.com
+
+   Body attendu (JSON) :
+     { caption1, caption2, imagePath }
    ───────────────────────────────────────────────────────────────────── */
 
 const https = require('https');
@@ -46,51 +50,28 @@ function githubRequest(method, path, body, token) {
 
 /* ─── Handler principal ────────────────────────────────────────────────── */
 exports.handler = async (event) => {
-  /* Méthode */
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method not allowed' };
   }
 
-  /* Authentification simple */
   if (event.headers['x-secret'] !== process.env.UPDATE_SECRET) {
     return { statusCode: 401, body: 'Unauthorized' };
   }
 
-  /* Parsing du corps */
-  console.log('RAW BODY:', String(event.body).slice(0, 500));
   let body;
   try { body = JSON.parse(event.body); }
   catch (e) {
-    console.log('JSON PARSE ERROR:', e.message);
-    return { statusCode: 400, body: `Invalid JSON: ${e.message} — raw: ${String(event.body).slice(0, 200)}` };
+    return { statusCode: 400, body: `Invalid JSON: ${e.message}` };
   }
-  console.log('KEYS:', Object.keys(body).join(', '));
-  console.log('caption1:', body.caption1);
-  console.log('image length:', body.image ? body.image.length : 'MISSING');
 
-  const { caption1, caption2, image, filename } = body;
+  const { caption1, caption2, imagePath } = body;
   const token = process.env.GITHUB_TOKEN;
 
-  if (!image) {
-    return { statusCode: 400, body: `No image provided — keys received: ${Object.keys(body).join(', ')} — caption1: ${caption1}` };
+  if (!imagePath) {
+    return { statusCode: 400, body: 'Missing imagePath' };
   }
 
-  /* 1. Upload de l'image dans /images/ */
-  const ext       = ((filename || 'jpg').split('.').pop() || 'jpg').toLowerCase();
-  const imagePath = `images/${Date.now()}.${ext}`;
-
-  const uploadRes = await githubRequest(
-    'PUT',
-    `/repos/${OWNER}/${REPO}/contents/${imagePath}`,
-    { message: `add: ${filename || 'image'}`, content: image },
-    token
-  );
-
-  if (uploadRes.status !== 201) {
-    return { statusCode: 500, body: `Image upload failed (${uploadRes.status})` };
-  }
-
-  /* 2. Lire slides.json actuel */
+  /* 1. Lire slides.json actuel */
   const getRes = await githubRequest(
     'GET',
     `/repos/${OWNER}/${REPO}/contents/slides.json`,
@@ -107,13 +88,13 @@ exports.handler = async (event) => {
   );
   const sha = getRes.data.sha;
 
-  /* 3. Ajouter le nouveau slide */
+  /* 2. Ajouter le nouveau slide */
   slides.push({
     image:   imagePath,
     caption: [caption1 || '', caption2 || ''],
   });
 
-  /* 4. Mettre à jour slides.json */
+  /* 3. Mettre à jour slides.json */
   const updateRes = await githubRequest(
     'PUT',
     `/repos/${OWNER}/${REPO}/contents/slides.json`,
