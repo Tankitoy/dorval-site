@@ -64,11 +64,11 @@ exports.handler = async (event) => {
     return { statusCode: 400, body: `Invalid JSON: ${e.message}` };
   }
 
-  const { caption1, caption2, imagePath } = body;
+  const { caption1, caption2, imageUrl } = body;
   const token = process.env.GITHUB_TOKEN;
 
-  if (!imagePath) {
-    return { statusCode: 400, body: 'Missing imagePath' };
+  if (!imageUrl) {
+    return { statusCode: 400, body: 'Missing imageUrl' };
   }
 
   /* 1. Lire slides.json actuel */
@@ -90,7 +90,7 @@ exports.handler = async (event) => {
 
   /* 2. Ajouter le nouveau slide */
   slides.push({
-    image:   imagePath,
+    image:   imageUrl,
     caption: [caption1 || '', caption2 || ''],
   });
 
