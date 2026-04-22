@@ -59,12 +59,16 @@ exports.handler = async (event) => {
   /* Parsing du corps */
   let body;
   try { body = JSON.parse(event.body); }
-  catch { return { statusCode: 400, body: 'Invalid JSON' }; }
+  catch (e) {
+    return { statusCode: 400, body: `Invalid JSON: ${e.message} — raw: ${String(event.body).slice(0, 200)}` };
+  }
 
   const { caption1, caption2, image, filename } = body;
   const token = process.env.GITHUB_TOKEN;
 
-  if (!image) return { statusCode: 400, body: 'No image provided' };
+  if (!image) {
+    return { statusCode: 400, body: `No image provided — keys received: ${Object.keys(body).join(', ')} — caption1: ${caption1}` };
+  }
 
   /* 1. Upload de l'image dans /images/ */
   const ext       = ((filename || 'jpg').split('.').pop() || 'jpg').toLowerCase();
