@@ -1,0 +1,187 @@
+/* ─── Reset ─────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────── */
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  font-family: system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Slider ─────────────────────────────────────────────────────────── */
+#slider {
+  position: fixed;
+  inset: 0;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  will-change: opacity;
+}
+
+.slide.active {
+  opacity: 1;
+}
+
+/* ─── Header ─────────────────────────────────────────────────────────── */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 2rem 2.5rem;
+  z-index: 10;
+  pointer-events: none; /* passe le clic aux nav-zones */
+}
+
+#artist-name {
+  color: #fff;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+  pointer-events: auto;
+}
+
+#contact-btn {
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.55);
+  padding-bottom: 1px;
+  transition: border-color 0.2s ease, opacity 0.2s ease;
+  pointer-events: auto;
+}
+
+#contact-btn:hover {
+  border-color: #fff;
+  opacity: 0.85;
+}
+
+/* ─── Footer / légende ───────────────────────────────────────────────── */
+footer {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 2rem 2.5rem;
+  z-index: 10;
+  text-align: right;
+  pointer-events: none;
+}
+
+#caption {
+  color: #fff;
+  font-size: 0.78125rem;   /* 12.5px */
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+#caption.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#caption span {
+  display: block;
+}
+
+/* ─── Navigation ─────────────────────────────────────────────────────── */
+.nav-zone {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  z-index: 5;
+  cursor: pointer;
+}
+
+#nav-prev { left: 0; }
+#nav-next { right: 0; }
+
+/* Flèches visibles */
+.nav-arrow {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 11;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none; /* géré par les nav-zones */
+}
+
+/* Apparition au survol des zones */
+#nav-prev:hover ~ #arrow-prev,
+#nav-next:hover ~ #arrow-next,
+#arrow-prev:hover,
+#arrow-next:hover {
+  opacity: 1;
+}
+
+body:hover #arrow-prev,
+body:hover #arrow-next {
+  opacity: 0.55;
+}
+
+#arrow-prev {
+  left: 1.75rem;
+}
+
+#arrow-next {
+  right: 1.75rem;
+}
+
+.nav-arrow svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.5));
+  transition: transform 0.2s ease;
+}
+
+#arrow-prev:hover svg { transform: translateX(-2px); }
+#arrow-next:hover svg { transform: translateX(2px); }
+
+/* ─── État de chargement ─────────────────────────────────────────────── */
+body.loading::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: #111;
+  z-index: 20;
+  transition: opacity 0.5s ease;
+}

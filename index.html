@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matthieu Dorval</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Slider -->
+  <div id="slider">
+    <div id="slides-container"></div>
+  </div>
+
+  <!-- UI fixe -->
+  <header>
+    <span id="artist-name">Matthieu Dorval</span>
+    <a id="contact-btn" href="mailto:matthieudorval@hotmail.fr">Contact</a>
+  </header>
+
+  <footer>
+    <div id="caption">
+      <span id="caption-line1"></span>
+      <span id="caption-line2"></span>
+    </div>
+  </footer>
+
+  <!-- Zones de navigation invisibles -->
+  <div id="nav-prev" class="nav-zone" aria-label="Image précédente"></div>
+  <div id="nav-next" class="nav-zone" aria-label="Image suivante"></div>
+
+  <!-- Flèches visibles -->
+  <div id="arrow-prev" class="nav-arrow" aria-hidden="true">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+  </div>
+  <div id="arrow-next" class="nav-arrow" aria-hidden="true">
+    <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
